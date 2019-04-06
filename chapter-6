@@ -1,0 +1,15 @@
+#6.5-6 show how to use the idea of the inner loop of insertion-sort to reduce the three assignment down to just one assignment
+
+#6.5-7 用priority queue 去implement a FIFO and FILO queue （先进先出 后进先出）  
+    main idea：   因为max queue 是从顶端的永远是最大的，我们可以建立一个value 记录数值和 count 决定value在maxqueue中的位置111
+```                  struct node
+                  {
+                    node.value = value；
+                    node.key = count；
+                  }
+                  
+                  MAXqueueinsertion(A,N)
+                  { A.heapsize =A.heapsize+1;
+                   A[heapsize].count = A[heapsize-1].count-1;
+                  }
+```
