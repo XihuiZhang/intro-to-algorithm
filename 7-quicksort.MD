@@ -54,6 +54,32 @@
     尾调用不一定是递归调用，但是尾递归特别有用，也比较容易实现。
     特点：尾递归在普通尾调用的基础上，多出了2个特征：
     
-    10. 在尾部调用的是函数自身 (Self-called)；
+    1. 在尾部调用的是函数自身 (Self-called)；
     2. 可通过优化，使得计算仅占用常量栈空间 (Stack Space)。
+    
+    function fact(n, r) {
+    if (n <= 0) {
+        return 1 * r;
+    } else {
+        return fact(n - 1, r * n); // <= 这里的入口环境没有必要保留。
+    }
+}
+```
+
+```
+  function fact(_n, _r) { // <= _n, _r 用作初始化变量
+    var n = _n;
+    var r = _r; // <= 将原来的 n, r 变量提出来编程迭代变量
+    function _fact(_n, _r) { // <= 迭代函数非常简单,就是更新迭代变量而已
+        n = _n;
+        r = _r;
+    }
+    _fact_loop: while (true) { // <= 生成一个迭代循环
+        if (n <= 0) {
+            return r;
+        } else {
+            _fact(n - 1, r * n); continue _fact_loop; // <= 执行迭代函数，并且进入下一次迭代
+        }
+    }
+  }
 ```
