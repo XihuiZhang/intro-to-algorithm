@@ -43,8 +43,46 @@ higher index than one taken earlier.
   input: A set A of n distinct numbers and an integer i with 1< i < n.  
   output: ith smallest element
   
-  找到最小的元素在数组中需要 n-1次比较 ，找到最大和最小的 需要3（n-2）/2次 
-  找到最小和 找到第二小，n+logn
+  找到最小的元素在数组中需要 n-1次比较 ： 显然  
+  找到最大和最小的 需要3（n-2）/2次 ：在第一次比较中，大的value 初始化为max， 小的value初始化为min，（n = even if n odd min = max = A[0]）后续的比较中A[i]只有 大于max， 小于min，或者夹在二者之间，比较的次数分别是 1  1   ，3个数进行2次比较   3/2*n。  
+  找到最小和 找到第二小，n+logn：   先用n-1次寻找到最小的，然后divide and conquer  
+  
+# Selection in expected linear time
+randomized-select（A，p，r，i）
+if p == r
+    return A[p]
+q = Randomized-partition（A，p，r）
+k =q-p+1
+if i == k return A[q]
+else if i < k return Randomized-select(A,p,q-1,i)
+else return  return Randomized-select(A,q+1,r,i-k)
+
+Randomized-partition(A,p,r)
+j=p+1
+i=p
+while j!=r
+  if A[j] < A[r] j++ then swap A[j] and A[i]
+  if A[j] > A[r] j++
+swap A[i], A[r]
+
+#  random-select in worst-caselinear time  
+1：将N length 的array 分成 N/5 个长度为 5 的subarray  
+2：find the median of each N/5 groups by first insertion sort  
+3: use select recursively to find the median x of the n/5 medians found in 2  
+4: partition the input array around the median-of-medians x using modified version of Partition.  
+
+analysis: 从at least 3*[1/2*n/5] number of element > x (medians of the medians) vice versa  
+T(n) = T(7/10n)+n+T(n/5)  
+suppose we show that the running time is linear by substitution, for some big constant c  T(n) < cn
+T(n) < c9/10n+an
+
+### problem analysis when group divide by 7 and 3
+T（n） =  T（n/3） + T(2/3n)+an  n(logn)
+T（n） =  T(n/7) + T(5/7n)+an o(n) log
+
+### 在仅仅只使用comparison去find ith smallest element in set of n element，同时你不许用额外的comparison 就可以找到 i-1th smallest and n-ith lager 
+### Describe o（n） time algorithm to find  k numbers of element that closest to median of s
+  因为前面提到了将group 分为 subgroup to find medians of the medians， （S - K/2S） =  roundup(x/2)*1/2*n/x
 
   
 
